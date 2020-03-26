@@ -15,7 +15,7 @@ public class CorsoDAO {
 	
 	public List<Corso> getCorsiByPeriodo(Integer pd){
 		
-		String sql = "select * from corso where pd = ?";
+		String sql = "SELECT * FROM corso WHERE pd=?";
 		List<Corso> result = new ArrayList<Corso>();
 		
 		try {
@@ -34,17 +34,17 @@ public class CorsoDAO {
 		} catch(SQLException e) {
 			throw new RuntimeException(e);
 		}
-		
 		return result;
-		
 	}
 	
-	public Map<Corso, Integer> getIscrittiByPeriodo(Integer pd){
-		String sql = "select c.codins, c.nome, c.crediti, c.pd, COUNT(*) as tot " + 
-				"from corso as c, iscrizione i " + 
-				"where c.codins = i.codins and c.pd = ? " + 
-				"group by c.codins, c.nome, c.crediti, c.pd ";
-		Map<Corso, Integer> result = new HashMap<Corso,Integer>();
+public Map<Corso, Integer> getIscrittiByPeriodo(Integer pd){
+		
+		String sql = "SELECT c.codins, c.nome, c.crediti, c.pd, COUNT(*) as tot" +
+					 " FROM corso as c, iscrizione i" +
+					 "WHERE c.codins = i.codins and c.pd = ?"+
+					 "GROUP BY c.codins, c.nome, c.crediti, c.pd";
+					 		
+		Map<Corso, Integer> result = new HashMap<Corso, Integer>();
 		
 		try {
 			Connection conn = ConnectDB.getConnection();
@@ -63,9 +63,6 @@ public class CorsoDAO {
 		} catch(SQLException e) {
 			throw new RuntimeException(e);
 		}
-		
 		return result;
 	}
-	
-
 }
