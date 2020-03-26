@@ -82,7 +82,7 @@ public class FXMLController {
 	    		return;
 	    	}
 	    	if(!pd.equals(1) && !pd.equals(2)) {
-	    		txtRisultato.setText("Devi inserire un numero: 1 o 2");
+	    		txtRisultato.setText("Devi inserire un numero (1 o 2)");
 	    		return;
 	    	}
 	    	Map<Corso, Integer> statistiche = this.model.getIscrittiByPeriodo(pd);

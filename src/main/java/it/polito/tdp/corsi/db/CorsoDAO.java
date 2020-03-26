@@ -37,32 +37,32 @@ public class CorsoDAO {
 		return result;
 	}
 	
-public Map<Corso, Integer> getIscrittiByPeriodo(Integer pd){
-		
-		String sql = "SELECT c.codins, c.nome, c.crediti, c.pd, COUNT(*) as tot" +
-					 " FROM corso as c, iscrizione i" +
-					 "WHERE c.codins = i.codins and c.pd = ?"+
-					 "GROUP BY c.codins, c.nome, c.crediti, c.pd";
-					 		
-		Map<Corso, Integer> result = new HashMap<Corso, Integer>();
-		
-		try {
-			Connection conn = ConnectDB.getConnection();
-			PreparedStatement st = conn.prepareStatement(sql);
-			st.setInt(1, pd);
-			ResultSet rs = st.executeQuery();
+	public Map<Corso, Integer> getIscrittiByPeriodo(Integer pd){
 			
-			while(rs.next()) {
-				Corso c = new Corso(rs.getString("codins"), rs.getInt("crediti"), rs.getString("nome"), rs.getInt("pd"));
-				Integer n = rs.getInt("tot");
-				result.put(c, n);
+			String sql = "SELECT c.codins, c.nome, c.crediti, c.pd, COUNT(*) as tot " +
+						 " FROM corso as c, iscrizione i " +
+						 "WHERE c.codins = i.codins and c.pd = ? "+
+						 "GROUP BY c.codins, c.nome, c.crediti, c.pd";
+						 		
+			Map<Corso, Integer> result = new HashMap<Corso, Integer>();
+			
+			try {
+				Connection conn = ConnectDB.getConnection();
+				PreparedStatement st = conn.prepareStatement(sql);
+				st.setInt(1, pd);
+				ResultSet rs = st.executeQuery();
+				
+				while(rs.next()) {
+					Corso c = new Corso(rs.getString("codins"), rs.getInt("crediti"), rs.getString("nome"), rs.getInt("pd"));
+					Integer n = rs.getInt("tot");
+					result.put(c, n);
+				}
+				
+				conn.close();
+				
+			} catch(SQLException e) {
+				throw new RuntimeException(e);
 			}
-			
-			conn.close();
-			
-		} catch(SQLException e) {
-			throw new RuntimeException(e);
+			return result;
 		}
-		return result;
-	}
 }
