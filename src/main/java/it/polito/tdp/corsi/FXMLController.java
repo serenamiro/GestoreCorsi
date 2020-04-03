@@ -11,6 +11,7 @@ import java.util.ResourceBundle;
 
 import it.polito.tdp.corsi.model.Corso;
 import it.polito.tdp.corsi.model.Model;
+import it.polito.tdp.corsi.model.Studente;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -93,12 +94,37 @@ public class FXMLController {
 
 	    @FXML
 	    void stampaDivisione(ActionEvent event) {
-
+	    	txtRisultato.clear();
+	    	String codins = txtCorso.getText();
+	    	if(!this.model.esisteCorso(codins)) {
+	    		txtRisultato.appendText("Il codice inserito non corrisponde ad alcun corso.\n");
+	    		return;
+	    	}
+	    	Map<String, Integer> statistiche = this.model.getDivisioneCDS(new Corso(codins, 0, null, 0));
+	    	for(String CDS : statistiche.keySet()) {
+	    		txtRisultato.appendText(CDS+"   "+statistiche.get(CDS)+"\n");
+	    	}
 	    }
 
 	    @FXML
 	    void stampaStudenti(ActionEvent event) {
-
+	    	txtRisultato.clear();
+	    	String codice = txtCorso.getText();
+	    	
+	    	// controllare se il codice corrisponde a un corso esistente
+	    	if(!this.model.esisteCorso(codice)) {
+	    		txtRisultato.appendText("Il codice inserito non corrisponde ad alcun corso.\n");
+	    		return;
+	    	}
+	    	
+	    	List<Studente> studenti = this.model.getStudentiByCorso(new Corso(codice, 0, null, 0));
+	    	
+	    	if(studenti.size() == 0) {
+	    		txtRisultato.appendText("Il corso non ha corsi iscritti.\n");
+	    	}
+	    	for(Studente s : studenti) {
+	    		txtRisultato.appendText(s.toString() + "\n");
+	    	}
 	    }
 
 	    @FXML
